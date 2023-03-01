@@ -29,9 +29,12 @@ const Signin = () => {
    };
     try {
       const response = await  userLoginResponse(payload);
+      console.log("response",response)
       if (response?.data?.msg) {
         notifyS(response?.data?.msg);
+        localStorage.setItem("userInfomation",JSON.stringify(response?.data))
         navigate("/");
+
       }
     } catch (error) {
      console.log("error",error) ;

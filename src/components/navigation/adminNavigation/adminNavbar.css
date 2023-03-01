@@ -1,0 +1,24 @@
+.navbar{
+  display: flex;
+  justify-content: space-around;
+  box-shadow: 1px 5px 5px #e0dcdc;
+}
+img{
+  width:8%;
+  height:3%;
+  object-fit: contain;
+}
+.nav-menu{
+  display: flex;
+  justify-content: space-between;
+  gap: 40px;
+
+}
+.nav-menu > li{
+  list-style: none;
+}
+.nav-menu >li > a{
+  text-decoration: none;
+  color: black;
+  font-size: 18px;
+}
