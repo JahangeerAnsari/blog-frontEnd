@@ -1,7 +1,11 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
-import userRegisteration from "../../apis/authentication/userSignup";
+// import userRegisteration from "../../apis/authentication/userSignup";
 import Logo from "../../img/logo.png";
+import {
+  registerUserAction,reset
+} from "../../redux/slices/users/authSlices";
+import { useDispatch, useSelector } from "react-redux";
 import "./signup.css";
 import { toast } from "react-toastify";
 
@@ -13,14 +17,33 @@ const initialValue = {
 
 const Signup = () => {
   const navigate = useNavigate();
+  const dispatch = useDispatch();
   const [signupDetails, setSignupDetails] = useState(initialValue);
+  const { isError, isLoading, isSuccess, message, user } = useSelector(
+    (store) => store?.users
+  );
   const notifyS = (msg) => toast.success(msg);
   const notifyE = (msg) => toast.error(msg);
+
+  useEffect(() => {
+    if (isError) {
+      notifyE(message)
+    }
+    if (isSuccess) {
+      console.log("isSuccess", isSuccess);
+      notifyS(message)
+       navigate("/signin");
+    }
+
+     dispatch(reset()); 
+  }, [dispatch, isError, isSuccess, message, navigate, user]);
+
+
   const handleSignFormChange = (e) => {
     const { name, value } = e.target;
     setSignupDetails((prev) => ({ ...prev, [name]: value }));
   };
-  const handleSignupFormSubmit = async (e) => {
+  const handleSignupFormSubmit = (e) => {
     e.preventDefault();
     console.log("signupDetails", signupDetails);
     const payload = {
@@ -28,19 +51,7 @@ const Signup = () => {
       email: signupDetails.email,
       password: signupDetails.password,
     };
-    try {
-      const response = await userRegisteration(payload);
-      console.log("resposne", response);
-      if (response?.data?.msg) {
-        notifyS(response?.data?.msg);
-        navigate("/signin");
-      }
-      
-    } catch (error) {
-      if (error) {
-        notifyE(error.response.data.msg);
-      }
-    }
+    dispatch(registerUserAction(payload));
   };
   return (
     <div className="signup">

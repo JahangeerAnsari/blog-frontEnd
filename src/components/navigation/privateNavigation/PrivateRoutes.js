@@ -4,9 +4,13 @@ import "./privateNavbar.css";
 import { Link, useNavigate } from "react-router-dom";
 import { MenuItem, Menu } from "@material-ui/core";
 import AccountCircleIcon from "@material-ui/icons/AccountCircle";
-const PrivateNavbar = () => {
+import { useDispatch, useSelector } from "react-redux";
+import { reset, userLogoutAction } from "../../../redux/slices/users/authSlices";
+const PrivateRoutes = ({userData}) => {
+  console.log("userData2222",userData)
   const [open, setOpen] = useState(null);
   let navigate = useNavigate();
+  const dispatch = useDispatch();
   const [selectIndex, setSelectedIndex] = useState(null);
   const menuList = [
     { name: "your profile", link: "/profile" },
@@ -19,13 +23,14 @@ const PrivateNavbar = () => {
   };
   const handleClose = () => setOpen(false);
  
-  
+
   const handleSelect = (index, item) => {
     console.log("index, item", index, item);
 
     setSelectedIndex(index);
     if (item.name === "Logout") {
-     localStorage.clear()
+      dispatch(userLogoutAction());
+    dispatch(reset());
     }
     handleClose();
     const selectedMenu = menuList[index];
@@ -51,6 +56,7 @@ const PrivateNavbar = () => {
           {" "}
           <Link to="/users">Authors(user)</Link>
         </li>
+        <li><span>Hello, {userData?.name}</span></li>
         <AccountCircleIcon onClick={handleOpen} />
       </ul>
       <Menu open={Boolean(open)} anchorEl={open} onClose={handleClose}>
@@ -64,4 +70,4 @@ const PrivateNavbar = () => {
   );
 };
 
-export default PrivateNavbar;
+export default PrivateRoutes;

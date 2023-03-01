@@ -4,21 +4,29 @@ import './adminNavbar.css'
 import { Link,useNavigate  } from 'react-router-dom'
 import {MenuItem, Menu } from '@material-ui/core';
 import AccountCircleIcon from '@material-ui/icons/AccountCircle';
-const AdminNavbar = () => {
+import { useDispatch, useSelector } from "react-redux";
+import { reset, userLogoutAction } from "../../../redux/slices/users/authSlices";
+const AdminRoutes = ({userData}) => {
   const [open, setOpen] = useState(null);
   let navigate = useNavigate();
+  const dispatch = useDispatch();
   const [selectIndex, setSelectedIndex] = useState(null);
  const menuList = [
   {name:"your profile",link:"/profile"}, 
-  {name:"Change Password",link:"/update-password"}, 
+  {name:"Change Password",link:"/update-password"},
+  {name:"Logout",link:""}, 
 ];
 
 const handleOpen = (e) => { 
   setOpen(e.currentTarget);
 }
 const handleClose = () => setOpen(false)
-const handleSelect = (index) => {
+const handleSelect = (index,item) => {
   setSelectedIndex(index);
+  if (item.name === "Logout") {
+    dispatch(userLogoutAction());
+  dispatch(reset());
+  }
   handleClose();
   const selectedMenu = menuList[index];
   
@@ -37,13 +45,14 @@ const handleSelect = (index) => {
       <li> <Link to="/users">Authors(user)</Link></li>
       <li> <Link to="/add-category">Add Category</Link></li>
       <li> <Link to="/category-list">Category List</Link></li>
+      <li><span>Admin,{userData?.name}</span></li>
       <button>Logout</button>
       <AccountCircleIcon onClick={handleOpen}/>
      </ul>
      <Menu open={Boolean(open)} anchorEl={open} onClose={handleClose}>
         {
           menuList.map((item, index) => (
-            <MenuItem  onClick={() => handleSelect(index)} >{item.name}</MenuItem>
+            <MenuItem  onClick={() => handleSelect(index,item)} >{item.name}</MenuItem>
           ))
         }
       </Menu>
@@ -51,4 +60,4 @@ const handleSelect = (index) => {
   )
 }
 
-export default AdminNavbar
+export default AdminRoutes;

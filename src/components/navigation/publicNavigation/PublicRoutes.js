@@ -2,7 +2,7 @@ import React from 'react'
 import Logo  from '../../../img/logo.png'
 import './publicNavbar.css'
 import { Link } from 'react-router-dom'
-const PublicNavbar = () => {
+const PublicRoutes = () => {
   return (
     <div className='navbar'>
     
@@ -18,4 +18,4 @@ const PublicNavbar = () => {
   )
 }
 
-export default PublicNavbar
+export default PublicRoutes

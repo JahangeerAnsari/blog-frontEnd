@@ -1,26 +1,28 @@
 import React, { useEffect } from "react";
-import AdminNavigation from "./adminNavigation/AdminNavigation";
-import PrivateNavigation from "./privateNavigation/PrivateNavigation";
-import PublicNavigation from "./publicNavigation/PublicNavigation";
+import { useSelector } from "react-redux";
+import AdminRoutes from "./adminNavigation/AdminRoutes";
+import PrivateRoutes from "./privateNavigation/PrivateRoutes";
+import PublicRoutes from "./publicNavigation/PublicRoutes";
 
 const Navbar = () => {
-  const userAuth = JSON.parse(localStorage.getItem("userInfomation"));
-  console.log("");
-  console.log("userAuth", userAuth?.user);
-  const userData = userAuth?.user;
-
+  const state = useSelector((store) => store?.users?.userAuth);
+console.log("state",state)
+  const isAdmin = state?.user?.role;
+  console.log("isAdmin: ", isAdmin)
+  const userData = state?.user
   return (
     <>
-      {!userAuth ? (
-        <PublicNavigation />
-      ) : userAuth?.user?.role === "user" ? (
-        <PrivateNavigation user={userData} />
+      {!state?.user ? (
+        <PublicRoutes  />
+      ) : state?.user?.role === "user" ? (
+        <PrivateRoutes userData={userData}/>
       ) : (
-        userAuth.user?.role === "admin" && <AdminNavigation user={userData} />
+        isAdmin === "admin" && <AdminRoutes  userData={userData} />
       )}
-      <h1>hello</h1>
     </>
   );
+  
+  
 };
 
 export default Navbar;
