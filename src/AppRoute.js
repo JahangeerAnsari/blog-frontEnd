@@ -9,8 +9,9 @@ import CreatePost from './pages/newPost/CreatePost'
 import Posts from './pages/posts/Posts'
 import Users from './pages/users/Users'
 import ChangePassword from './pages/changePassword/ChangePassword'
-import AddCategory from './pages/addCategory/AddCategory'
+import AddCategory from './pages/category/AddCategory'
 import CategoryList from './pages/categoryList/CategoryList'
+import UpdateCategory from './pages/category/UpdateCategory'
 const AppRoute = () => {
   return (
    <div>
@@ -29,6 +30,7 @@ const AppRoute = () => {
         {/* admin */}
         <Route path ="/add-category" element={<AddCategory/>}/>
         <Route path ="/category-list" element={<CategoryList/>}/>
+        <Route path ="/update-category/:id" element={<UpdateCategory/>}/>
 
       </Routes>
     </Router>

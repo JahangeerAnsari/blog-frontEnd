@@ -7,7 +7,7 @@ export const registerUserAction = createAsyncThunk(
     try {
       return await authService.register(user);
     } catch (error) {
-      console.log("error121", error);
+      console.log("error121 register", error);
       const message =
         (error?.response &&
           error?.response?.data &&
