@@ -13,8 +13,7 @@ const AddCategory = () => {
   console.log("inputCategory", inputCategory);
   const notifyS = (msg) => toast.success(msg);
   const notifyE = (msg) => toast.error(msg);
-  // const { isError, isLoading, isSuccess, message, category } = useSelector(
-  //   (store) => store?.categories
+ 
   const { isError, isLoading, isSuccess, message } = useSelector(
     (store) => store?.category
   );
