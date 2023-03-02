@@ -6,9 +6,11 @@ import {
   reset,
   addNewCategoryAction,
 } from "../../redux/slices/category/categorySlices";
+import { useNavigate } from "react-router-dom";
 
 const AddCategory = () => {
   const dispatch = useDispatch();
+  const navigate = useNavigate();
   const [inputCategory, setInputCategory] = useState("");
   console.log("inputCategory", inputCategory);
   const notifyS = (msg) => toast.success(msg);
@@ -26,13 +28,16 @@ const AddCategory = () => {
     if (isSuccess) {
       console.log("isSuccess", isSuccess);
       notifyS(message);
+     
     }
   }, [isError, isSuccess, message, dispatch]);
   const handleAddCategorySubmit = (e) => {
     e.preventDefault();
     dispatch(addNewCategoryAction(inputCategory));
     setInputCategory("")
-    dispatch(reset())
+    dispatch(reset());
+    navigate("/category-list")
+
   };
   return (
     <div className="add-category">
