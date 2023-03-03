@@ -31,8 +31,14 @@ const UpdateCategory = () => {
   const defaultCategory = category?.category?.title;
   const [inputCategory, setInputCategory] = useState(null);
 
-  const handleUpdateChange = () => {
-    setInputCategory(ref.current.value);
+  console.log("===> data: ", defaultCategory, inputCategory);
+
+  useEffect(() => {
+    setInputCategory(defaultCategory);
+  }, [defaultCategory]);
+
+  const handleUpdateChange = (e) => {
+    setInputCategory(e.target.value);
   };
   useEffect(() => {
     if (isError) {
@@ -49,7 +55,6 @@ const UpdateCategory = () => {
   const handleUpdateCategorySubmit = (e) => {
     e.preventDefault();
     dispatch(updateCategoryAction({ title: inputCategory, id }));
-    ref.current.value = "";
     navigate("/category-list");
   };
 
@@ -59,8 +64,9 @@ const UpdateCategory = () => {
       <form onSubmit={handleUpdateCategorySubmit}>
         <input
           type="text"
-          ref={ref}
-          defaultValue={defaultCategory || ""}
+          // ref={ref}
+          // defaultValue={defaultCategory || ""}
+          value={inputCategory}
           placeholder="enter category"
           onChange={handleUpdateChange}
         />

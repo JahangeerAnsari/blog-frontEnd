@@ -36,7 +36,6 @@ const AddCategory = () => {
     dispatch(addNewCategoryAction(inputCategory));
     setInputCategory("")
     dispatch(reset());
-    navigate("/category-list")
 
   };
   return (

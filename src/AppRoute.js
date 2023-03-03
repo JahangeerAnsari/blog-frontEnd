@@ -12,6 +12,7 @@ import ChangePassword from './pages/changePassword/ChangePassword'
 import AddCategory from './pages/category/AddCategory'
 import CategoryList from './pages/categoryList/CategoryList'
 import UpdateCategory from './pages/category/UpdateCategory'
+import AdminProtectedRoute from './components/navigation/protectedRoutes/AdminProtectedRoute'
 const AppRoute = () => {
   return (
    <div>
@@ -27,10 +28,17 @@ const AppRoute = () => {
         <Route path ="/posts" element={<Posts/>}/>
         <Route path ="/users" element={<Users/>}/>
         <Route path ="/update-password" element={<ChangePassword/>}/>
-        {/* admin */}
-        <Route path ="/add-category" element={<AddCategory/>}/>
+        {/*  */}
+          <Route  element={<AdminProtectedRoute/>}>
+       <Route path ="/add-category" element={<AddCategory/>}/>
         <Route path ="/category-list" element={<CategoryList/>}/>
         <Route path ="/update-category/:id" element={<UpdateCategory/>}/>
+        <Route path ="/users" element={<Users/>}/>
+        <Route path ="/update-password" element={<ChangePassword/>}/>
+        <Route path ="/profile" element={<Profile/>}/>
+        <Route path ="/createPost" element={<CreatePost/>}/>
+          </Route>
+       
 
       </Routes>
     </Router>

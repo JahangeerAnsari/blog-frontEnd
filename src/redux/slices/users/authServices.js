@@ -2,15 +2,7 @@ import axios from "axios";
 // const API_URL = 'http://localhost:4000/api/v1/auth/register';
 const jsonConfig = require("../../../Config.json");
 
-// try {
-//   const response = await axios.post(jsonConfig.apiUrl + 'auth/register',payload);
-//   console.log('response', response);
 
-//   user = response;
-//   return Promise.resolve(user);
-// } catch (error) {
-//   return Promise.reject(error);
-// }
 
 const register = async (payload) => {
   let user ={}
