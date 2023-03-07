@@ -1,10 +1,13 @@
 .createPost{
-  max-width: 500px;
+  max-width: 300px;
   margin: 10px auto;
   border: 1px solid rgb(173, 173, 173);
   border-radius: 5px;
 }
-
+.category-dropdown{
+  max-width: 250px;
+  margin-left: 20px;
+}
 .main-div{
   border-top: 1px solid rgb(173, 173, 173) ;
 }
@@ -12,10 +15,11 @@
   display: flex;
 }
 
-#post-btn{
-  border: none;
-  color: #339ce3;
-  background:none;
+.createPost-btn{
+  width:150px;
+  margin-left: 40px;
+}
+.createPost-btn button{
   font-weight: bolder;
   cursor: pointer;
 }

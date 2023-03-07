@@ -5,7 +5,7 @@ import Signup from './pages/signup/Signup'
 import Signin from './pages/signin/Signin'
 import Profile from './pages/profile/Profile'
 import Home from './pages/home/Home'
-import CreatePost from './pages/newPost/CreatePost'
+import CreatePost from './pages/posts/CreatePost'
 import Posts from './pages/posts/Posts'
 import Users from './pages/users/Users'
 import ChangePassword from './pages/changePassword/ChangePassword'
@@ -36,7 +36,7 @@ const AppRoute = () => {
         <Route path ="/users" element={<Users/>}/>
         <Route path ="/update-password" element={<ChangePassword/>}/>
         <Route path ="/profile" element={<Profile/>}/>
-        <Route path ="/createPost" element={<CreatePost/>}/>
+        <Route path ="/create-post" element={<CreatePost/>}/>
           </Route>
        
 
