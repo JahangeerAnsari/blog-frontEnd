@@ -1,13 +1,16 @@
 import React, { useEffect, useState,useRef } from "react";
 import Select from "react-select";
 import "./createPost.css";
-import { createPostAction } from "../../redux/slices/posts/postSlices";
+import { createPostAction,reset } from "../../redux/slices/posts/postSlices";
 import { useDispatch, useSelector } from "react-redux";
 import CategoryDropDown from "../category/CategoryDropDown";
+import CircularProgress from "@material-ui/core/CircularProgress";
 import { fetchedCategories } from "../../redux/slices/category/categorySlices";
+import { useNavigate } from "react-router-dom";
 import { toast } from "react-toastify";
 const CreatePost = () => {
   const dispatch = useDispatch();
+  const navigate = useNavigate();
   const ref = useRef();
   const notifyS = (msg) => toast.success(msg);
   const notifyE = (msg) => toast.error(msg);
@@ -42,6 +45,7 @@ const CreatePost = () => {
     (store) => store?.post
   );
   console.log("postInputValue", postInputValue, selectCat);
+  console.log("postCreate", postCreate);
   useEffect(() => {
     if (isError) {
       console.log("is error", isError);
@@ -50,8 +54,10 @@ const CreatePost = () => {
     if (isSuccess) {
       console.log("isSuccess", isSuccess);
       notifyS(message);
+      navigate("/posts")
     }
-  }, [isError, isSuccess, message, dispatch]);
+    dispatch(reset())
+  }, [isError, isSuccess, message, dispatch, navigate]);
 
   const handlePostChange = (e) => {
     const { name, value } = e.target;
@@ -61,8 +67,6 @@ const CreatePost = () => {
     console.log("files",e.target.files[0])
 setImage(e.target.files[0]);
   }
-
- 
   const handlePostFormSubmit = (e) => {
     e.preventDefault();
     
@@ -75,9 +79,12 @@ setImage(e.target.files[0]);
     } else {
       console.log("else calling===================*+++");
      dispatch(createPostAction({ ...postInputValue,selectCat,image  }));
+    
       setPostInputValue({ pTitle: "", postDescription: "" });
       ref.current.value = null;
       setSelectCat({});
+      // if()
+     
     }
   };
 

@@ -25,7 +25,7 @@ const AppRoute = () => {
         <Route path ="/signin" element={<Signin/>}/>
         <Route path ="/profile" element={<Profile/>}/>
         <Route path ="/createPost" element={<CreatePost/>}/>
-        <Route path ="/posts" element={<Posts/>}/>
+        <Route path ="user/posts" element={<Posts/>}/>
         <Route path ="/users" element={<Users/>}/>
         <Route path ="/update-password" element={<ChangePassword/>}/>
         {/*  */}
@@ -37,6 +37,7 @@ const AppRoute = () => {
         <Route path ="/update-password" element={<ChangePassword/>}/>
         <Route path ="/profile" element={<Profile/>}/>
         <Route path ="/create-post" element={<CreatePost/>}/>
+        <Route path ="/posts" element={<Posts/>}/>
           </Route>
        
 
