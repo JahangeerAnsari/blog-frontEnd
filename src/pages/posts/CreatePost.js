@@ -1,7 +1,7 @@
-import React, { useEffect, useState,useRef } from "react";
+import React, { useEffect, useState, useRef } from "react";
 import Select from "react-select";
 import "./createPost.css";
-import { createPostAction,reset } from "../../redux/slices/posts/postSlices";
+import { createPostAction, reset } from "../../redux/slices/posts/postSlices";
 import { useDispatch, useSelector } from "react-redux";
 import CategoryDropDown from "../category/CategoryDropDown";
 import CircularProgress from "@material-ui/core/CircularProgress";
@@ -26,14 +26,14 @@ const CreatePost = () => {
   });
 
   const [selectCat, setSelectCat] = useState({});
-  const [image,setImage] = useState("");
-  console.log("image",image?.name)
+  const [image, setImage] = useState("");
+  console.log("image", image?.name);
 
   const handleCatChnage = (e) => {
     setSelectCat(e.target.value);
   };
 
-  console.log("selectCat",selectCat);
+  console.log("selectCat", selectCat);
   console.log("allCategories", allCategories);
 
   const [postInputValue, setPostInputValue] = useState({
@@ -54,37 +54,38 @@ const CreatePost = () => {
     if (isSuccess) {
       console.log("isSuccess", isSuccess);
       notifyS(message);
-      navigate("/posts")
+     
     }
-    dispatch(reset())
+    dispatch(reset());
   }, [isError, isSuccess, message, dispatch, navigate]);
 
   const handlePostChange = (e) => {
     const { name, value } = e.target;
     setPostInputValue((prev) => ({ ...prev, [name]: value }));
   };
-  const handleFileChange = (e) =>{
-    console.log("files",e.target.files[0])
-setImage(e.target.files[0]);
-  }
+  const handleFileChange = (e) => {
+    console.log("files", e.target.files[0]);
+    setImage(e.target.files[0]);
+  };
   const handlePostFormSubmit = (e) => {
     e.preventDefault();
-    
+
     if (
       postInputValue?.pTitle === "" ||
-      postInputValue?.postDescription === "" || image ===""
+      postInputValue?.postDescription === "" ||
+      image === ""
     ) {
       const errorMsg = "Please select the required fields";
       notifyE(errorMsg);
     } else {
       console.log("else calling===================*+++");
-     dispatch(createPostAction({ ...postInputValue,selectCat,image  }));
-    
+      dispatch(createPostAction({ ...postInputValue, selectCat, image }));
+     
       setPostInputValue({ pTitle: "", postDescription: "" });
       ref.current.value = null;
       setSelectCat({});
+      navigate("/posts");
       // if()
-     
     }
   };
 
@@ -106,7 +107,7 @@ setImage(e.target.files[0]);
             />
           </div>
           <div className="category-dropdown">
-            <select onChange={handleCatChnage} >
+            <select onChange={handleCatChnage}>
               <option value={""}>select category...</option>
               {allCategories?.map((cat, index) => {
                 return (
@@ -136,7 +137,12 @@ setImage(e.target.files[0]);
             />
           </div>
           <div>
-            <input type="file" ref={ref} name="file" onChange={handleFileChange}/>
+            <input
+              type="file"
+              ref={ref}
+              name="file"
+              onChange={handleFileChange}
+            />
           </div>
           <div className="createPost-btn">
             <button type="submit">create new Post</button>

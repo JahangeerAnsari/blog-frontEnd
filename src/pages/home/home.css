@@ -28,6 +28,7 @@
 }
 
 .card-content{
+  display: flex;
   text-align: left;
   line-height: 4px;
   padding: 3px 10px;

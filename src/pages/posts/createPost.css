@@ -1,15 +1,56 @@
 .createPost{
-  max-width: 300px;
-  margin: 10px auto;
+  max-width: 200px;
+  margin: 5px auto;
   border: 1px solid rgb(173, 173, 173);
   border-radius: 5px;
 }
+.main{
+  display: flex;
+  gap: 100px;
+}
+.box{
+  width:250px;
+}
+.box h3{
+  color: #fff;background-color: #03a9f4;
+  padding: 10px 20px;
+  font-size:20px;
+  font-weight: 600;
+  border-top-left-radius: 10px;
+  border-top-right-radius: 10px;
+}
+.box ul {
+  position: relative;
+  background-color: #fff;
+}
+.box ul li {
+  list-style: none;
+  padding: 10px;
+  width: 100%;
+  background-color: #fff;
+  box-shadow: 0 5px 25px rgba(0, 0, 0, 0.1);
+  transition:transform 0.5s;
+  cursor: pointer;
+}
+.box ul li:hover{
+  transform: scale(1.1);
+  z-index: 100;
+  background-color: #25bcff;
+  color: #fff;
+}
 .category-dropdown{
   max-width: 250px;
-  margin-left: 20px;
+  margin-left: 10px;
 }
 .main-div{
   border-top: 1px solid rgb(173, 173, 173) ;
+}
+.card-image{
+  width:200px
+}
+.card-content{
+  gap: 10px;
+  cursor: pointer;
 }
 .post-header{
   display: flex;

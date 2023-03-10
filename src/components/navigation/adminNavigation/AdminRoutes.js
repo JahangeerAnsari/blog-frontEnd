@@ -40,7 +40,7 @@ const handleSelect = (index,item) => {
      
      <ul className='nav-menu'>
       <li><Link to="/">Home</Link> </li>
-      <li><Link to="/create-post">Create Post</Link></li>
+      <li><Link to="/create-post">Create Post M</Link></li>
       <li> <Link to="/posts">Posts</Link></li>
       <li> <Link to="/users">Authors(user)</Link></li>
       <li> <Link to="/add-category">Add Category</Link></li>
