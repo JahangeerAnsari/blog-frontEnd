@@ -13,6 +13,7 @@ import {
 import DateFormatter from "../../utils/DateFormatter";
 import { fetchedCategories } from "../../redux/slices/category/categorySlices";
 import { CircularProgress } from "@material-ui/core";
+import { Link } from "react-router-dom";
 
 const Posts = () => {
   const dispatch = useDispatch();
@@ -74,12 +75,14 @@ const Posts = () => {
                   <div className="card-image">
                     <img src={post?.image} alt="profile-pic" className="" />
                   </div>
-                  {/* card content */}
-                  <p>{post?.description}</p>
+                  {/* card content */} 
+                  <p>{post?.description}
+                  <Link to={`/posts/${post?._id}`}>Read more..</Link>
+                  </p>
                   <div className="card-content">
                     <span>
                       <ThumbUpIcon
-                        onClick={() => dispatch(addToggleLikeToPost(post._id))}
+                        onClick={() => dispatch(addToggleLikeToPost(post?._id))}
                       />
                       <p>
                         {post?.likes.length ? post?.likes.length : 0} 

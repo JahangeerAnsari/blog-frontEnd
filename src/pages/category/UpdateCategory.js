@@ -55,7 +55,10 @@ const UpdateCategory = () => {
   const handleUpdateCategorySubmit = (e) => {
     e.preventDefault();
     dispatch(updateCategoryAction({ title: inputCategory, id }));
-    navigate("/category-list");
+    setTimeout(() => {
+      navigate("/category-list");
+    }, 1000);
+    
   };
 
   return (

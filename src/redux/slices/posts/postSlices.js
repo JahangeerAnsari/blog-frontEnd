@@ -67,7 +67,7 @@ export const fetchAllPosts = createAsyncThunk(
 export const addToggleLikeToPost = createAsyncThunk(
   "post/likes",
   async (postId, { rejectWithValue, getState }) => {
-    console.log("postId",postId)
+    console.log("postId", postId);
     try {
       const user = getState()?.users;
       console.log("user-category", user);
@@ -78,7 +78,7 @@ export const addToggleLikeToPost = createAsyncThunk(
           Authorization: `Bearer ${userAuth?.token}`,
         },
       };
-      return await postServices.addLikeToPost(config,postId);
+      return await postServices.addLikeToPost(config, postId);
     } catch (error) {
       console.log("error121  ****** ", error);
       const message =
@@ -93,11 +93,11 @@ export const addToggleLikeToPost = createAsyncThunk(
   }
 );
 
-// dislike post 
+// dislike post
 export const addToggleToDislikePost = createAsyncThunk(
   "post/dislikes",
   async (postId, { rejectWithValue, getState }) => {
-    console.log("postId",postId)
+    console.log("postId", postId);
     try {
       const user = getState()?.users;
       console.log("user-category", user);
@@ -108,7 +108,65 @@ export const addToggleToDislikePost = createAsyncThunk(
           Authorization: `Bearer ${userAuth?.token}`,
         },
       };
-      return await postServices.disLikePost(config,postId);
+      return await postServices.disLikePost(config, postId);
+    } catch (error) {
+      console.log("error121  ****** ", error);
+      const message =
+        (error?.response &&
+          error?.response?.data &&
+          error?.response?.data?.msg) ||
+        error?.toString();
+      console.log("message category ****", message);
+
+      return rejectWithValue(message);
+    }
+  }
+);
+// fetch all posts
+export const fetchSinglePostAction = createAsyncThunk(
+  "post/",
+  async (postId, { rejectWithValue, getState }) => {
+    console.log("postId123", postId);
+    try {
+      const user = getState()?.users;
+      console.log("user-category", user);
+      const { userAuth } = user;
+
+      const config = {
+        headers: {
+          Authorization: `Bearer ${userAuth?.token}`,
+        },
+      };
+      return await postServices.getSinglePost(config, postId);
+    } catch (error) {
+      console.log("error121  ****** ", error);
+      const message =
+        (error?.response &&
+          error?.response?.data &&
+          error?.response?.data?.msg) ||
+        error?.toString();
+      console.log("message category ****", message);
+
+      return rejectWithValue(message);
+    }
+  }
+);
+export const updatePostAction = createAsyncThunk(
+  "post/update",
+  async (payload,{ rejectWithValue, getState }) => {
+
+    console.log("payload---->",payload)
+    try {
+      const user = getState()?.users;
+      console.log("user-post", user);
+      const { userAuth } = user;
+
+      const config = {
+        headers: {
+          Authorization: `Bearer ${userAuth?.token}`,
+        },
+      };
+      return await postServices.updatePost(config, payload);
     } catch (error) {
       console.log("error121  ****** ", error);
       const message =
@@ -197,7 +255,7 @@ export const postSlice = createSlice({
       state.message = action?.payload;
       state.likes = null;
     });
-    
+
     // dislike the post
     builder.addCase(addToggleToDislikePost.pending, (state, action) => {
       state.isLoading = true;
@@ -215,6 +273,43 @@ export const postSlice = createSlice({
       state.isError = true;
       state.message = action?.payload;
       state.disLikes = null;
+    });
+    // get single post
+    builder.addCase(fetchSinglePostAction.pending, (state, action) => {
+      state.isLoading = true;
+    });
+    builder.addCase(fetchSinglePostAction.fulfilled, (state, action) => {
+      console.log("success case get single post", action.payload);
+      state.isLoading = false;
+      state.isSuccess = true;
+      state.postDetail = action.payload;
+      state.message = action?.payload?.msg;
+    });
+    builder.addCase(fetchSinglePostAction.rejected, (state, action) => {
+      console.log("error case 444  single post", action);
+      state.isLoading = false;
+      state.isError = true;
+      state.message = action?.payload;
+      state.postDetail = null;
+    });
+
+    // update post
+    builder.addCase(updatePostAction.pending, (state, action) => {
+      state.isLoading = true;
+    });
+    builder.addCase(updatePostAction.fulfilled, (state, action) => {
+      console.log("success case update post", action.payload);
+      state.isLoading = false;
+      state.isSuccess = true;
+      state.updatePost = action.payload;
+      state.message = action?.payload?.msg;
+    });
+    builder.addCase(updatePostAction.rejected, (state, action) => {
+      console.log("error case update post", action);
+      state.isLoading = false;
+      state.isError = true;
+      state.message = action?.payload;
+      state.updatePost = null;
     });
   },
 });

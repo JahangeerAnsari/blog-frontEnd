@@ -13,6 +13,8 @@ import AddCategory from './pages/category/AddCategory'
 import CategoryList from './pages/categoryList/CategoryList'
 import UpdateCategory from './pages/category/UpdateCategory'
 import AdminProtectedRoute from './components/navigation/protectedRoutes/AdminProtectedRoute'
+import PostDetail from './pages/posts/PostDetails'
+import UpdatePost from './pages/posts/UpdatePost'
 const AppRoute = () => {
   return (
    <div>
@@ -28,6 +30,8 @@ const AppRoute = () => {
         <Route path ="user/posts" element={<Posts/>}/>
         <Route path ="/users" element={<Users/>}/>
         <Route path ="/update-password" element={<ChangePassword/>}/>
+        
+
         {/*  */}
           <Route  element={<AdminProtectedRoute/>}>
        <Route path ="/add-category" element={<AddCategory/>}/>
@@ -38,6 +42,8 @@ const AppRoute = () => {
         <Route path ="/profile" element={<Profile/>}/>
         <Route path ="/create-post" element={<CreatePost/>}/>
         <Route path ="/posts" element={<Posts/>}/>
+        <Route path ="/posts/:id" element={<PostDetail/>}/>
+        <Route path ="/update-post/:id" element={<UpdatePost/>}/>
           </Route>
        
 
