@@ -1,7 +1,7 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import FavoriteBorderIcon from "@material-ui/icons/FavoriteBorder";
-import MoodIcon from "@material-ui/icons/Mood";
+
 import ThumbUpIcon from "@material-ui/icons/ThumbUp";
 import ThumbDownIcon from "@material-ui/icons/ThumbDown";
 import VisibilityIcon from "@material-ui/icons/Visibility";
@@ -15,6 +15,10 @@ import { fetchedCategories } from "../../redux/slices/category/categorySlices";
 import { CircularProgress } from "@material-ui/core";
 import { Link } from "react-router-dom";
 
+import Comment from "../../components/comment/Comment";
+
+
+
 const Posts = () => {
   const dispatch = useDispatch();
   const { postList, isLoading, likes, disLikes } = useSelector(
@@ -22,7 +26,11 @@ const Posts = () => {
   );
   console.log("postList", postList);
   const { categoryList } = useSelector((store) => store?.category);
+  
   console.log("categoryList", categoryList);
+
+  
+  
 
   useEffect(() => {
     dispatch(fetchAllPosts(""));
@@ -32,6 +40,8 @@ const Posts = () => {
   useEffect(() => {
     dispatch(fetchedCategories());
   }, [dispatch]);
+ 
+  
 
   return (
     <div className="main">
@@ -75,18 +85,17 @@ const Posts = () => {
                   <div className="card-image">
                     <img src={post?.image} alt="profile-pic" className="" />
                   </div>
-                  {/* card content */} 
-                  <p>{post?.description}
-                  <Link to={`/posts/${post?._id}`}>Read more..</Link>
+                  {/* card content */}
+                  <p>
+                    {post?.description}
+                    <Link to={`/posts/${post?._id}`}>Read more..</Link>
                   </p>
                   <div className="card-content">
                     <span>
                       <ThumbUpIcon
                         onClick={() => dispatch(addToggleLikeToPost(post?._id))}
                       />
-                      <p>
-                        {post?.likes.length ? post?.likes.length : 0} 
-                      </p>
+                      <p>{post?.likes.length ? post?.likes.length : 0}</p>
                     </span>
                     <span>
                       <ThumbDownIcon
@@ -97,7 +106,6 @@ const Posts = () => {
                       <p>
                         {" "}
                         {post?.disLikes.length ? post?.disLikes.length : 0}{" "}
-                        
                       </p>
                     </span>
                     <span>
@@ -106,13 +114,9 @@ const Posts = () => {
                     </span>
                   </div>
                   {/* card comment */}
-                  <div className="add-comment">
-                    <span>
-                      <MoodIcon />
-                    </span>
-                    <input type="text" placeholder="enter comment" />
-                    <button className="comment">post</button>
-                  </div>
+                  
+                  <Comment postId ={post?._id}/>
+                    
                 </div>
               );
             })}

@@ -1,5 +1,6 @@
 import axios from "axios";
 const jsonConfig = require("../../../Config.json");
+
 const addNewPost = async (formData, headers) => {
   try {
     const response = await axios.post(
@@ -95,6 +96,23 @@ const updatePost = async (headers,payload, ) => {
     return Promise.reject(error);
   }
 };
+
+const deletePost = async (headers,postId ) => {
+  console.log("delete post id",postId)
+  try {
+    const response = await axios.delete(
+      jsonConfig.apiUrl + `post/delete/${postId}`,
+      
+      headers
+    );
+    console.log("get Single post", response);
+
+
+    return Promise.resolve(response?.data);
+  } catch (error) {
+    return Promise.reject(error);
+  }
+};
 const postServices = {
   addNewPost,
   getAllPost,
@@ -102,5 +120,6 @@ const postServices = {
   disLikePost,
   getSinglePost,
   updatePost,
+  deletePost
 };
 export default postServices;

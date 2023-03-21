@@ -1,3 +1,4 @@
+import { CircularProgress } from "@material-ui/core";
 import React, { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { useNavigate, useParams } from "react-router-dom";
@@ -23,8 +24,6 @@ const UpdatePost = () => {
     message,
   } = useSelector((store) => store?.post);
   const post = postDetail?.post;
-  console.log("post1222222222", post);
-  console.log("updatePost", updatePost);
   const [postInputField, setPostInputField] = useState({});
   const [selectCat, setSelectCat] = useState({});
 
@@ -86,13 +85,10 @@ const UpdatePost = () => {
     }
   };
 
-  if (isLoading) {
-  }
-
-  console.log("===> **** post inputs: ", postInputField);
-
   return (
     <div className="add-category">
+     { isLoading ? ( <CircularProgress/>): (
+      <>
       <h5>Update Post</h5>
       <div>
         <form onSubmit={handlePostUpdateFormSubmit}>
@@ -114,24 +110,15 @@ const UpdatePost = () => {
               onChange={handlePostChange}
             />
           </div>
-          {/* <div>
-            <select onChange={handleCatChnage}>
-              <option value={""}>select category...</option>
-              {allCategories?.map((cat, index) => {
-                return (
-                  <option value={cat.label} key={cat._id}>
-                    {cat?.label}
-                  </option>
-                );
-              })}
-            </select>
-            </div> */}
+         
 
           <div className="add-category">
             <button type="submit">Update Post</button>
           </div>
         </form>
       </div>
+      </>
+     )}
     </div>
   );
 };

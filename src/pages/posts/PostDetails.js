@@ -15,13 +15,18 @@ import FavoriteIcon from "@material-ui/icons/Favorite";
 import ShareIcon from "@material-ui/icons/Share";
 import ExpandMoreIcon from "@material-ui/icons/ExpandMore";
 import MoreVertIcon from "@material-ui/icons/MoreVert";
+import Moment from 'react-moment';
 import EditIcon from "@material-ui/icons/Edit";
 import DeleteIcon from "@material-ui/icons/Delete";
 import { useDispatch, useSelector } from "react-redux";
-import { fetchSinglePostAction } from "../../redux/slices/posts/postSlices";
-import { Routes, Route, useParams, Link } from "react-router-dom";
+import {
+  deletePostAction,
+  fetchSinglePostAction,
+} from "../../redux/slices/posts/postSlices";
+import { Routes, Route, useParams, Link, useNavigate } from "react-router-dom";
 import DateFormatter from "../../utils/DateFormatter";
 import { CircularProgress } from "@material-ui/core";
+import { toast } from "react-toastify";
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -51,59 +56,129 @@ const PostDetail = (props) => {
   console.log("userId", postId);
   const classes = useStyles();
   const dispatch = useDispatch();
-  const { postDetail,isLoading } = useSelector((store) => store?.post);
-  console.log("postDetail");
+  const navigate = useNavigate();
+
+  const notifyS = (msg) => toast.success(msg);
+  const notifyE = (msg) => toast.error(msg);
+  const {
+    postDetail,
+    isLoading,
+    deletedPost,
+    isDeleted,
+    isError,
+    isSuccess,
+    message,
+  } = useSelector((store) => store?.post);
+  const { userAuth } = useSelector((store) => store?.users);
+  console.log("userAuth", userAuth);
+  const loggedInUser = userAuth?.user?.id;
+
+  const postCreatedByUser = postDetail?.post?.user?._id === loggedInUser;
+  console.log("postCreatedByUser", postCreatedByUser);
+  console.log("delete post", deletedPost);
   const post = postDetail?.post;
-  console.log("post", post);
+  console.log("isDeleted", isDeleted);
+
+  const comments = postDetail?.post?.comments;
 
   useEffect(() => {
     dispatch(fetchSinglePostAction(postId));
   }, [dispatch, postId]);
 
+  // setTimeout(() => {
+  //   navigate("/category-list");
+  // }, 1000);
+
+  // const isPostDeleted = post.filter((p) => p._id !== postId);
+  // console.log("isPostDeleted",isPostDeleted)
+
+  // if(deletedPost?.post === null) {
+  //   setTimeout(() => {
+  //   navigate("/posts");
+  // }, 1000);
+  // }
+
   return (
     <>
-    { isLoading ? (<CircularProgress/>): (
-      <Card className={classes.root}>
-      <CardHeader
-        avatar={
-          <Avatar alt="Remy Sharp" src={post?.user?.profilePhoto
-          } />
-        }
-        action={
-          <IconButton aria-label="settings">
-            <MoreVertIcon />
-          </IconButton>
-        }
-        title={post?.user.name}
-        subheader={<DateFormatter date={post?.createdAt}/>}
-      />
-      <CardMedia
-        className={classes.media}
-        image={post?.image}
-        title="Paella dish"
-      />
-      <CardContent>
-        <Typography variant="h5" color="textSecondary">
-          {post?.title}
-        </Typography>
-        <Typography variant="body2" color="textSecondary" component="p">
-          {post?.description}
-        </Typography>
-      </CardContent>
-      <CardActions disableSpacing>
-        <IconButton aria-label="add to favorites">
-        <Link to={`/update-post/${post?._id}`}>
-                        <EditIcon />
-                      </Link>
-        </IconButton>
-        <IconButton aria-label="share">
-          <DeleteIcon />
-        </IconButton>
-      </CardActions>
-    </Card>
-    )}
+      {isLoading ? (
+        <CircularProgress />
+      ) : (
+        <Card className={classes.root}>
+          <CardHeader
+            avatar={<Avatar alt="Remy Sharp" src={post?.user?.profilePhoto} />}
+            action={
+              <IconButton aria-label="settings">
+                <MoreVertIcon />
+              </IconButton>
+            }
+            title={post?.user.name}
+            subheader={<DateFormatter date={post?.createdAt} />}
+          />
+          <CardMedia
+            className={classes.media}
+            image={post?.image}
+            title="Paella dish"
+          />
+          <CardContent>
+            <Typography variant="h5" color="textSecondary">
+              {post?.title}
+            </Typography>
+            <Typography variant="body2" color="textSecondary" component="p">
+              {post?.description}
+            </Typography>
+
+            <Typography>Post comments</Typography>
+            <ul>
+              {comments?.length <= 0 ? (
+                <h1>no comments</h1>
+              ) : (
+                comments?.map((comment) => (
+                  <>
+                    <li>
+                      <div>
+                        <Avatar
+                          alt="Remy Sharp"
+                          src={comment?.user?.profilePhoto}
+                        />
+                         <Typography variant="small">{comment?.user?.name}</Typography>
+                         <Typography>
+                         {/* <DateFormatter date= /> */}
+                         <Moment fromNow ago>
+                         {comment?.createdAt}
+                         </Moment>
+                         </Typography>
+                         <Typography>
+                          {comment?.description}
+                         </Typography>
+                        <div>
+                         
+                        </div>
+                      </div>
+                    </li>
+                  </>
+                ))
+              )}
+            </ul>
+          </CardContent>
+          {/* show delete update functionalities if the post belong to them */}
+
+          {postCreatedByUser ? (
+            <CardActions disableSpacing>
+              <IconButton aria-label="add to favorites">
+                <Link to={`/update-post/${post?._id}`}>
+                  <EditIcon />
+                </Link>
+              </IconButton>
+              <IconButton aria-label="share">
+                <DeleteIcon
+                  onClick={() => dispatch(deletePostAction(post?._id))}
+                />
+              </IconButton>
+            </CardActions>
+          ) : null}
+        </Card>
+      )}
     </>
-   
   );
 };
 export default PostDetail;

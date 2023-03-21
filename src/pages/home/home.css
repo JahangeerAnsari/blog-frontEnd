@@ -54,6 +54,9 @@
   cursor: pointer;
   color: #339ce3;
 }
+.commests ul li {
+  list-style: none;
+}
 
 
 .material-symbols-outlined-red {

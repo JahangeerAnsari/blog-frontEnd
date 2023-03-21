@@ -1,5 +1,10 @@
-import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
+import { createAsyncThunk, createSlice,createAction } from "@reduxjs/toolkit";
+import { useDispatch } from "react-redux";
 import postServices from "./postServices";
+
+// action to redirect
+
+
 
 // lets create post action
 export const createPostAction = createAsyncThunk(
@@ -153,9 +158,8 @@ export const fetchSinglePostAction = createAsyncThunk(
 );
 export const updatePostAction = createAsyncThunk(
   "post/update",
-  async (payload,{ rejectWithValue, getState }) => {
-
-    console.log("payload---->",payload)
+  async (payload, { rejectWithValue, getState }) => {
+    console.log("payload---->", payload);
     try {
       const user = getState()?.users;
       console.log("user-post", user);
@@ -167,6 +171,37 @@ export const updatePostAction = createAsyncThunk(
         },
       };
       return await postServices.updatePost(config, payload);
+    } catch (error) {
+      console.log("error121  ****** ", error);
+      const message =
+        (error?.response &&
+          error?.response?.data &&
+          error?.response?.data?.msg) ||
+        error?.toString();
+      console.log("message category ****", message);
+
+      return rejectWithValue(message);
+    }
+  }
+);
+export const deletePostAction = createAsyncThunk(
+  "post/delete",
+  async (postId, { rejectWithValue, getState }) => {
+   
+    try {
+      const user = getState()?.users;
+      console.log("user-post", user);
+      const { userAuth } = user;
+
+      const config = {
+        headers: {
+          Authorization: `Bearer ${userAuth?.token}`,
+        },
+      };
+     
+      return await postServices.deletePost(config, postId);
+      
+
     } catch (error) {
       console.log("error121  ****** ", error);
       const message =
@@ -310,6 +345,24 @@ export const postSlice = createSlice({
       state.isError = true;
       state.message = action?.payload;
       state.updatePost = null;
+    });
+    // delete post
+    builder.addCase(deletePostAction.pending, (state, action) => {
+      state.isLoading = true;
+    });
+    builder.addCase(deletePostAction.fulfilled, (state, action) => {
+      console.log("success case delete post", action.payload);
+      state.isLoading = false;
+      state.isSuccess = true;
+      state.deletedPost = action.payload;
+      state.message = action?.payload?.msg;
+    });
+    builder.addCase(deletePostAction.rejected, (state, action) => {
+      console.log("error case delete post", action);
+      state.isLoading = false;
+      state.isError = true;
+      state.message = action?.payload;
+      state.deletedPost = null;
     });
   },
 });
